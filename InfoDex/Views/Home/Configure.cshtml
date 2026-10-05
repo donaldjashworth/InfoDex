@@ -1,0 +1,109 @@
+﻿@{
+    ViewBag.Title = "Database Configuration";
+}
+<h2>@ViewBag.Title</h2>
+
+<div>
+    <span id="notification" style="color:green;font-weight:bold;font-size:larger;"></span>
+</div>
+<br />
+
+<div id="div_search">
+    <table style="width:99%">
+        <tr>
+            <td valign="top" width="20%">
+                <table>
+                    <tr>
+                        <td align="right">
+                            Existing Database<br />
+                            <ul id="configure_existing" class="list-group"></ul>
+                        </td>
+                        <td width="5%">
+                        </td>
+                        <td valign="top" width="40%" align="left">
+                            New Database<br />
+                            <input type="text" id="configure_database"
+                                   width="300"
+                                   onblur="waterMark(this, event, 'Enter new database name here...');"
+                                   onfocus="waterMark(this, event, 'Enter new database name here...');" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="bottom" width="40%" align="right">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <button class="btn btn-danger"                                                
+                                                id="configure_delete"
+                                                data-dismiss="modal" 
+                                                data-toggle="modal" 
+                                                data-target="#confirm-delete"x                                                
+                                                data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Deleting">
+                                            <span class="glyphicon glyphicon-random"></span> Delete
+                                        </button>
+                                    </td>
+
+                                    <td>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td width="5%"></td>
+                        <td valign="bottom" width="20%" align="left">
+                            <table>
+                                <tr>
+                                    <td>
+                                    </td>
+
+                                    <td>
+                                        <button class="btn btn-primary disabled"
+                                                id="configure_create"
+                                                onclick="createDatabase();"
+                                                data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Creating">
+                                            <span class="glyphicon glyphicon-plus"></span> Create
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+
+        </tr>
+    </table>
+</div>
+
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Confirm Delete</h4>
+            </div>
+
+            <div class="modal-body">
+                <p>You are about to delete this database and this procedure is irreversible.</p>
+                <p>Continue with deletion?</p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button"
+                        class="btn btn-default"
+                        data-dismiss="modal">
+                    Cancel
+                </button>
+
+                <a class="btn btn-danger btn-ok" data-dismiss="modal" onclick="deleteDatabase(); return true;">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+
+    @Scripts.Render("~/Scripts/custom/Configure.cshtml.js")
+    @Styles.Render("~/Content/jquery-ui-1.10.2.css")
+}

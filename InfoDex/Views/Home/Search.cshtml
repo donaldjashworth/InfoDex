@@ -1,0 +1,292 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{ 
+    ViewBag.Title = "Search";
+}
+
+    <div id="div_searchtoggle">
+        <h3>Click to hide/reveal Search Filters</h3>
+    </div>
+
+    <div id="div_search">
+        <table style="width:99%">
+            <tr>
+                <td valign="top" width="20%">
+                    <table>
+                        <tr>
+                            <td align="right">
+                                Select Database<br />
+                                <select id="filter_database"></select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top" width="100%" align="right">
+                                <table>
+                                    <tr>
+                                        <td>Page size</td>
+                                        <td>
+                                            <select id="filter_pagesize">
+                                                <option value="-1">All</option>
+                                                <option value="15">15</option>
+                                                <option value="30" selected>30</option>
+                                                <option value="60">60</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </table>                                
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="bottom" width="100%" align="right">
+                                <table>
+                                    <tr>
+                                        <td>Keyword weight</td>
+                                        <td>
+                                            <select id="filter_keywordweight">
+                                                <option value="1">1</option>
+                                                <option value="3" selected>3</option>
+                                                <option value="7">7</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="bottom" width="100%" align="right">
+                                <table>
+                                    <tr>
+                                        <td><button class="btn btn-warning" 
+                                                    id="filter_recalc"
+                                                    data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Recalculating">
+                                            <span class="glyphicon glyphicon-random"></span> Recalc</button></td>
+
+                                        <td><button class="btn btn-success" 
+                                                    id="filter_add"
+                                                    data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Adding">
+                                            <span class="glyphicon glyphicon-plus"></span> Add</button></td>
+
+                                        <td><button class="btn btn-primary" 
+                                                    id="filter_search"
+                                                    data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Searching">
+                                            <span class="glyphicon glyphicon-search"></span> Search</button></td>
+                                    </tr>
+                                </table>
+
+                                
+                            </td>
+                        </tr>
+
+                    </table>
+                </td>
+
+                <td valign="top" width="2%">
+                </td>
+
+                <td valign="top" width="100%">
+                    Search for<br />
+                    <textarea 
+                              id="filter_keywords" 
+                              rows="4" 
+                              cols="60" 
+                              style="font-size: 22px;"
+                              onblur="waterMark(this, event, 'Enter search text here...');"
+                              onfocus="waterMark(this, event ,'Enter search text here...');"></textarea>
+                </td>
+
+            </tr>
+        </table>
+    </div>
+
+    <br />
+
+    <div>
+        <span id="notification" style="color:green;font-weight:bold;font-size:larger;"></span>
+    </div>
+
+
+    <div id="div_results">
+        <div><h1>Results</h1></div>
+            <table class="display table table-striped table-bordered" id="results" style="width:99%;">
+                <thead>
+                    <tr class="header" style="text-decoration: underline;">
+                        <th class="fh" style="cursor:pointer">Hits</th>
+                        <th class="fh" style="cursor:pointer">ID</th>
+                        <th class="fh" style="cursor:pointer">Keywords</th>
+                        <th class="fh" style="cursor:pointer">Summary</th>
+                        <th class="fh" style="cursor:pointer">Last Viewed</th>
+                        <th class="fh" style="cursor:pointer">Created Date</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+
+<hr />
+
+<!-- Modal -->
+<div class="modal fade" id="detailed" tabindex="-1" role="dialog" aria-labelledby="detailedLabel">
+    <div class="modal-details">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h1 class="modal-title" id="detailedLabel">Details</h1>
+            </div>
+            <div class="modal-body">
+                <table style="width: 95%;margin-left: 20px;margin-right: 20px;">
+                    <tr>
+                        <td><b>UID</b> <div id='detail_uid' /></td>
+                    </tr>
+                    <tr>
+                        <td style="padding-bottom:10px;"><b>LASTVIEWED</b> <div id='detail_lastviewed'></div> </td>
+                    </tr>
+
+                    <tr>
+                        <td><b>KEYWORDS</b></td>
+                    </tr>
+                    <tr>
+                        <td style="padding-bottom:10px;"><div id='detail_keywords'></div></td>
+                    </tr>
+
+                    <tr>
+                        <td><b>SUMMARY</b></td>
+                    </tr>
+                    <tr>
+                        <td style="padding-bottom:10px;"><div id='detail_summary'></div></td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <div id="toolbar" class="btn-toolbar" data-role="editor-toolbar" data-target="#TEDS">
+                                <div class="btn-group">
+                                    <a class="btn dropdown-toggle" data-toggle="dropdown" title="Font"><i class="fas fa-font"></i><b class="caret"></b></a>
+                                    <ul class="dropdown-menu"></ul>
+                                </div>
+                                <div class="btn-group">
+                                    <a class="btn dropdown-toggle" data-toggle="dropdown" title="Font Size"><i class="fas fa-text-height"></i>&nbsp;<b class="caret"></b></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a data-edit="fontSize 5"><font size="5">Huge</font></a></li>
+                                        <li><a data-edit="fontSize 3"><font size="3">Normal</font></a></li>
+                                        <li><a data-edit="fontSize 1"><font size="1">Small</font></a></li>
+                                    </ul>
+                                </div>
+                                <div class="btn-group">
+                                    <a class="btn" data-edit="bold" title="Bold (Ctrl/Cmd+B)"><i class="fas fa-bold"></i></a>
+                                    <a class="btn" data-edit="italic" title="Italic (Ctrl/Cmd+I)"><i class="icon-italic"></i></a>
+                                    <a class="btn" data-edit="strikethrough" title="Strikethrough"><i class="icon-strikethrough"></i></a>
+                                    <a class="btn" data-edit="underline" title="Underline (Ctrl/Cmd+U)"><i class="icon-underline"></i></a>
+                                </div>
+                                <div class="btn-group">
+                                    <a class="btn" data-edit="insertunorderedlist" title="Bullet list"><i class="fas fa-list-ul"></i></a>
+                                    <a class="btn" data-edit="insertorderedlist" title="Number list"><i class="fas fa-list-ol"></i></a>
+                                    <a class="btn" data-edit="outdent" title="Reduce indent (Shift+Tab)"><i class="fas fa-indent"></i></a>
+                                    <a class="btn" data-edit="indent" title="Indent (Tab)"><i class="fas fa-indentt"></i></a>
+                                </div>
+                                <div class="btn-group">
+                                    <a class="btn" data-edit="justifyleft" title="Align Left (Ctrl/Cmd+L)"><i class="fas fa-align-left"></i></a>
+                                    <a class="btn" data-edit="justifycenter" title="Center (Ctrl/Cmd+E)"><i class="fas fa-align-center"></i></a>
+                                    <a class="btn" data-edit="justifyright" title="Align Right (Ctrl/Cmd+R)"><i class="fas fa-align-right"></i></a>
+                                    <a class="btn" data-edit="justifyfull" title="Justify (Ctrl/Cmd+J)"><i class="fas fa-align-justify"></i></a>
+                                </div>
+                                <div class="btn-group">
+                                    <a class="btn dropdown-toggle" data-toggle="dropdown" title="Hyperlink"><i class="fas fa-link"></i></a>
+                                    <div class="dropdown-menu input-append">
+                                        <input class="span2" placeholder="URL" type="text" data-edit="createLink" />
+                                        <button class="btn" type="button">Add</button>
+                                    </div>
+                                    <a class="btn" data-edit="unlink" title="Remove Hyperlink"><i class="fas fa-cut"></i></a>
+
+                                </div>
+                                <div class="btn-group">
+                                    <a class="btn" data-edit="undo" title="Undo (Ctrl/Cmd+Z)"><i class="fas fa-undo"></i></a>
+                                    <a class="btn" data-edit="redo" title="Redo (Ctrl/Cmd+Y)"><i class="fas fa-repeat"></i></a>
+                                </div>
+                            </div>
+
+
+                                <div class="form-group">
+
+                                    <textarea id="detail_body" rows="30" cols="80" class="form-control"></textarea>
+                                    @* PROTO:  WYSIWG work*@
+                                    @*<div id="detail_body" style="overflow-y: scroll; height:400px;"></div>*@
+                                </div>
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+            <div class="modal-footer">
+                <table>
+                    <tr style="align-content:center;">
+                        <td><button 
+                                    type="button" 
+                                    class="btn btn-danger" 
+                                    data-dismiss="modal" 
+                                    data-toggle="modal" 
+                                    data-target="#confirm-delete"
+                                    id="detail_delete">
+                            <span class="glyphicon glyphicon-trash"></span> Delete</button></td>
+
+                        <td style="width:3000px;"></td>
+
+                        <td><button type="button" class="btn btn-warning" data-dismiss="modal" id="detail_update">
+                            <span class="glyphicon glyphicon-edit"></span> Update</button></td>
+
+                        <td><button type="button" class="btn btn-default" data-dismiss="modal">
+                            <span class="glyphicon glyphicon-share-alt"></span> Close</button></td>
+                    </tr>                    
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Confirm Delete</h4>
+            </div>
+
+            <div class="modal-body">
+                <p>You are about to delete this record and this procedure is irreversible.</p>
+                <p>Continue with deletion?</p>
+            </div>
+
+            <div class="modal-footer">
+                <button 
+                        type="button" 
+                        class="btn btn-default" 
+                        data-dismiss="modal">Cancel</button>
+
+                <a class="btn btn-danger btn-ok" data-dismiss="modal" onclick="deleteDetail(); return true;">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+​
+    @section Scripts {
+
+        @Scripts.Render("~/Scripts/custom/Search.cshtml.js")
+        @Styles.Render("~/Content/jquery-ui-1.10.2.css")
+
+        @Scripts.Render("~/Scripts/bootstrap-wysiwyg.js")
+        @Scripts.Render("~/Scripts/jquery.hotkeys.js")
+        @Styles.Render("~/Content/index.css")
+
+        @Styles.Render("~/Content/font-awesome/fontawesome-all.min.css")
+        @Styles.Render("~/Content/external/prettify.css")
+        @Scripts.Render("~/Content/external/prettify.js")
+
+    }
+
+
+

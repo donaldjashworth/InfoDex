@@ -1,0 +1,41 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <table style="width:100%;">
+        <tr>
+            <td>
+                <div id="branding">
+                    <img src="~/Images/Rolodex.png" alt="" />
+                </div>
+            </td>
+            <td>
+                <h1>InfoDex</h1>
+                <p class="lead">InfoDex is a cheezy homebrew searchable knowledge base.</p>
+                <p><a href="~/Home/Search" class="btn btn-primary btn-lg">Begin searching &raquo;</a></p>
+            </td>
+        </tr>
+</table>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Past</h2>
+        <p>InfoDex was orginally written in Classic ASP and VBScript back in 2000.  Eventually InfoDex was ported to ASP.Net using
+        and C# custom business objects. </p>
+    </div>
+    <div class="col-md-4">
+        <h2>Present</h2>
+        <p>This version of InfoDex implements the MVC pattern in C# and utilizes AJAX calls to populate a jQuery DataGrid.  Additionaly
+        InfoDex utilizes Bootstrap modals.</p>
+        <p><a class="btn btn-default" href="https://msdn.microsoft.com/en-us/library/dd381533(v=vs.98).aspx">Learn more about MVC and AJAX&raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Future</h2>
+        <p>
+            I have some English Porter Stemming work completed that I would love to work into InfoDex...perhaps as a search option.
+        </p>
+        <p><a class="btn btn-default" href="http://snowball.tartarus.org/algorithms/porter/stemmer.html">Learn more about Porter Stemming algorithms&raquo;</a></p>
+    </div>
+</div>
