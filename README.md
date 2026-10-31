@@ -36,3 +36,8 @@ Support (a Tech Phone Jockey) fully written in VB.  Over time, InfoDex morphed i
 various enhancements.
 
 So, have fun...use this as you may.  Please share with others :o)
+
+
+**ABOUT ME**
+______________________________________________________________________________________________________________
+Senior Software Engineer and Full-Stack Architect with extensive experience designing and delivering practical, database-driven applications that solve real-world business and operational problems. Skilled in full-stack development, legacy system modernization, and building search-and-retrieval systems that improve productivity and reduce context-switching for technical teams. Brings a strong foundation in application architecture, data modeling, web technologies, and engineering leadership, with a focus on building reliable, maintainable solutions that create measurable value.
